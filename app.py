@@ -1,3 +1,8 @@
+import sys
+import subprocess
+subprocess.run([sys.executable, "-m", "pip", "install", 
+                "opencv-python-headless==4.8.0.74", "--quiet"], 
+               capture_output=True)
 
 import streamlit as st
 import cv2
@@ -55,7 +60,6 @@ def detect_and_count(image_np, model, conf, target_classes=None):
                 (12,34), cv2.FONT_HERSHEY_SIMPLEX, 0.95, (165,180,252), 2)
     return output, counts, label_colors
 
-# Sidebar
 with st.sidebar:
     st.markdown("### 🎯 Object Counter AI")
     confidence = st.slider("Confidence", 0.1, 0.9, 0.45, 0.05)
@@ -74,7 +78,6 @@ st.success(f"✅ Model ready — detects {len(model.names)} object classes")
 
 tab1, tab2 = st.tabs(["📁 Image Upload", "🎬 Video Upload"])
 
-# TAB 1 - IMAGE
 with tab1:
     uploaded_file = st.file_uploader("Upload Image", type=["jpg","jpeg","png","webp"])
     if uploaded_file:
@@ -111,7 +114,6 @@ with tab1:
         st.download_button("⬇️ Download Result", buf.getvalue(),
                            file_name="result.png", mime="image/png")
 
-# TAB 2 - VIDEO
 with tab2:
     video_file = st.file_uploader("Upload Video", type=["mp4","avi","mov"])
     frame_skip = st.slider("Process every N frames", 1, 10, 3)
